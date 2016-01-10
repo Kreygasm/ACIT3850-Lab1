@@ -44,32 +44,32 @@ and open the template in the editor.
                 }
                 
                 function __winner($token){
-                    $winner = 0;
+                    $winner = false;
                     for($row=0; $row<3; $row++){
                         $result = 0;
                         for($col=0; $col<3; $col++){
                             if($this->position[(3*$row + $col)] == $token) {$result++;}
                             
                         }
-                        if($result == 3){$winner++;}
+                        if($result == 3){$winner = true;}
                     }
                     for($col=0; $col<3; $col++){
                         $result = 0;
                         for($row=0; $row<3; $row++){
-                            if($this->position[(3*$col + $row)] == $token) {$result++;}
+                            if($this->position[($col + 3*$row)] == $token) {$result++;}
                         }
-                        if($result == 3){$winner++;}
+                        if($result == 3){$winner = true;}
                     }
                     //*diagonal1
                     if( ($this->position[0] == $token) && 
                         ($this->position[4] == $token) && 
                         ($this->position[8] == $token))
-                    { $winner++; }
+                    { $winner = true; }
                     //*diagonal2
                     else if(($this->position[2] == $token) && 
                         ($this->position[4] == $token) && 
                         ($this->position[6] == $token))
-                    { $winner++; }
+                    { $winner = true; }
                 return $winner;   
                 }
             }
@@ -78,8 +78,6 @@ and open the template in the editor.
             //$squares = str_split($position);
             $game = new Game($position);
             $game->__display();
-            echo $game->__winner('x');
-            echo $game->__winner('o');
             if($game->__winner('x') == true ){echo 'WINNER!';}
             else if ($game->__winner('o') == true ){echo 'I win too bad';}
             else {echo 'no winner yet';}
