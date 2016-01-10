@@ -8,22 +8,35 @@ and open the template in the editor.
     <head>
         <meta charset="UTF-8">
         <title></title>
+        <style>
+            table, td {
+                border:1px solid black;
+                font-size:large; 
+                font-weight:bold;
+            }
+        </style>
     </head>
     <body>
         <?php
-        //check if a board parameter was passed
-        if(!isset($_GET['board'])){echo 'nothing to show here';}
-        else {
-            $temp = "jim";
-            echo 'Hi, name is '.$temp.' ME GO FACE SMOrc SMOrc Kappa';
-            class Game {
+        class Game {
                 var $position;
                 function Game($squares){
                     $this->position = str_split($squares);
                 }
+                function __pick_move(){
+                    $array = [];
+                    $openSpace = 0;
+                    for($i=0; $i<9; $i++){
+                        if($this->position[$i] == '-'){
+                            $array[$openSpace] = $i;
+                            $openSpace++;
+                        }
+                    }
+                    $this->position[$array[round(rand(0, $openSpace-1))]] = 'x';
+                }
                 
                 function __display(){
-                    echo '<table cols="3" style="font-size:large; font-weight:bold">';
+                    echo '<table cols="3" cellpadding="5">';
                     echo '<tr>'; // open the first row;
                     for($pos=0; $pos<9; $pos++){
                         echo $this->show_cell($pos);
@@ -73,16 +86,21 @@ and open the template in the editor.
                 return $winner;   
                 }
             }
-            
-            $position = $_GET['board'];
-            //$squares = str_split($position);
-            $game = new Game($position);
-            $game->__display();
-            if($game->__winner('x') == true ){echo 'WINNER!';}
-            else if ($game->__winner('o') == true ){echo 'I win too bad';}
-            else {echo 'no winner yet';}
-
+        
+        //check if a board parameter was passed
+        if(!isset($_GET['board'])){
+            $position = '---------';
         }
+        else {$position = $_GET['board'];}
+            $temp = "Anderson";
+            echo 'Hi, name is '.$temp.'. ME GO FACE SMOrc SMOrc Kappa';
+            
+            $game = new Game($position);
+            if ($game->__winner('o') == false ){$game->__pick_move();}
+            $game->__display();
+            if($game->__winner('x') == true ){echo 'Me win, get good noob';}
+            else if ($game->__winner('o') == true ){echo 'WINNNNNEEERRR';}
+            else {echo 'no winner yet';}
         ?>
     </body>
 </html>
